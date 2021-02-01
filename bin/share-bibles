@@ -16,8 +16,5 @@ tmux send-keys -t share-bibles:2 'cd ~/code/share-bibles' C-m
 tmux new-window -n git
 tmux send-keys -t share-bibles:3 'cd ~/code/share-bibles' C-m
 
-
-
-
 fi
 tmux a -t share-bibles \; select-window -t 1 \;
