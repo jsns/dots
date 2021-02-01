@@ -1,3 +1,6 @@
+#
+# launch share-bibles tmux session
+#
 # check if session exists
 tmux has-session -t share-bibles
 if [ $? != 0 ]
