@@ -1,0 +1,23 @@
+# check if session exists
+tmux has-session -t share-bibles
+if [ $? != 0 ]
+then
+
+# create if it doesn't exist
+tmux -2 new-session -s share-bibles -n vim -d
+
+# default directory
+tmux send-keys -t share-bibles:1 'cd ~/code/share-bibles && vim' C-m
+
+# more windows
+tmux new-window -n server
+tmux send-keys -t share-bibles:2 'cd ~/code/share-bibles' C-m
+
+tmux new-window -n git
+tmux send-keys -t share-bibles:3 'cd ~/code/share-bibles' C-m
+
+
+
+
+fi
+tmux a -t share-bibles \; select-window -t 1 \;
