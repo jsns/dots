@@ -8,6 +8,7 @@
 --
 
 import XMonad
+import XMonad.Actions.SpawnOn
 import Data.Monoid
 import System.Exit
 
@@ -243,7 +244,10 @@ myLogHook = return ()
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = return ()
+myStartupHook = do
+                spawnOn "1" "chromium-browser-privacy"
+                spawnOn "9" "thunderbird"
+                spawnOn "9" "Discord"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

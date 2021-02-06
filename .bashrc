@@ -29,3 +29,5 @@ export PATH
 
 # User specific aliases and functions
 export PS1="\[\e[32;0m\][\u@\h \W]\\$ \[\e[0m\]"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

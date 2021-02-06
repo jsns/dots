@@ -1,8 +1,9 @@
 syntax on
 set relativenumber
 set nu
-set tabstop=2 softtabstop=2 expandtab 
+set tabstop=4 softtabstop=4
 set shiftwidth=2
+set smartindent
 set nowrap
 set nohlsearch
 set noswapfile
@@ -17,18 +18,23 @@ set signcolumn=yes
 
 let loaded_matchparen=1
 
+" FZF
+nnoremap <C-p> :FZF <CR>
+
 command Cfg :e ~/.config/nvim/init.vim
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'tomasr/molokai'
-Plug '9mm/vim-closer'
+Plug 'jiangmiao/auto-pairs'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
 colorscheme molokai
-
 set completeopt=menuone,noinsert,noselect
+let g:completion_confirm_key = "\<C-y>"
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
 :lua << EOF
@@ -44,7 +50,7 @@ let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 		local servers = {'jsonls', 'clangd', 'tsserver'}
 		for _, lsp in ipairs(servers) do
 				lspconfig[lsp].setup {
-						on_attach = on_attach,
+						on_attach = on_attach
 				}
 		end
 EOF
