@@ -28,6 +28,20 @@ export PATH
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-export PS1="\[\e[32;0m\][\u@\h \W]\\$ \[\e[0m\]"
+# export PS1="\[\e[32;0m\][\u@\h \W]\\$ \[\e[0m\]"
+export PS1="$ "
+
+case "$TERM" in
+"dumb")
+    PS1="> "
+    ;;
+xterm*|rxvt*|eterm*|screen*)
+    PS1="\[\e[32;0m\][\u@\h \W]\\$ \[\e[0m\]"
+    ;;
+*)
+    PS1="\[\e[32;0m\][\u@\h \W]\\$ \[\e[0m\]"
+    ;;
+esac
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source "$HOME/.cargo/env"

@@ -2,7 +2,7 @@ syntax on
 set relativenumber
 set nu
 set tabstop=4 softtabstop=4
-set shiftwidth=2
+set shiftwidth=4
 set smartindent
 set nowrap
 set nohlsearch
@@ -15,24 +15,36 @@ set smartindent
 set incsearch
 set scrolloff=6
 set signcolumn=yes
+set termguicolors
 
 let loaded_matchparen=1
 
-" FZF
-nnoremap <C-p> :FZF <CR>
-
-command Cfg :e ~/.config/nvim/init.vim
-
 call plug#begin(stdpath('data') . '/plugged')
-Plug 'tomasr/molokai'
-Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/vim-closer'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+" colorschemes
+Plug 'chuling/equinusocio-material.vim'
+Plug 'tomasr/molokai'
 call plug#end()
 
-colorscheme molokai
+" buffer nav
+nnoremap <C-J> :bnext <CR>
+nnoremap <C-K> :bprevious <CR>
+
+" Cfg cmd
+command Cfg :e ~/.config/nvim/init.vim
+
+" FZF
+nnoremap <C-p> :FZF <CR>
+
+let g:equinusocio_material_style = 'pure'
+colorscheme equinusocio_material
+
+" LSP and Autocomplete 
 set completeopt=menuone,noinsert,noselect
 let g:completion_confirm_key = "\<C-y>"
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
