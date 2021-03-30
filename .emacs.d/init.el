@@ -20,7 +20,7 @@
  '(display-line-numbers 'relative)
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(diminish helm platformio-mode ccls projectile grayscale-theme hybrid-reverse-theme hemisu-theme darkburn-theme naysayer-theme sublime-themes waher-theme modus-operandi-theme modus-vivendi-theme modus-themes lsp-java gruber-darker-theme vterm latex-preview-pane auctex nlinum-relative undo-fu molokai-theme twilight-theme tide delight flycheck lsp-ui nlinum linum-relative org-bullets selectrum-prescient selectrum crux which-key doom-themes zoom evil-magit magit-evil magit w3m elfeed autopair company-lsp company company-mode lsp-mode chess exwm evil use-package))
+   '(ag diminish helm platformio-mode ccls projectile grayscale-theme hybrid-reverse-theme hemisu-theme darkburn-theme naysayer-theme sublime-themes waher-theme modus-operandi-theme modus-vivendi-theme modus-themes lsp-java gruber-darker-theme vterm latex-preview-pane auctex nlinum-relative undo-fu molokai-theme twilight-theme tide delight flycheck lsp-ui nlinum linum-relative org-bullets selectrum-prescient selectrum crux which-key doom-themes zoom evil-magit magit-evil magit w3m elfeed autopair company-lsp company company-mode lsp-mode chess exwm evil use-package))
  '(python-indent-offset 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -114,13 +114,12 @@ scroll-conservatively 100)
   (setq lsp-ui-doc-show-with-mouse nil)
   (setq lsp-ui-sideline-show-diagnostics nil)
   (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-clients-clangd-args
+		'("--header-insertion=never"))
 
   (setq lsp-ui-sideline-show-code-actions nil)
   (setq lsp-ui-sideline-show-hover nil)
   )
-(use-package ccls
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-		 (lambda () (require 'ccls) (lsp))))
 
 (use-package selectrum
 :ensure t
@@ -170,7 +169,3 @@ scroll-conservatively 100)
 (global-set-key (kbd "M-o") #'crux-other-window-or-switch-buffer)
 (global-set-key (kbd "C-c n") #'crux-cleanup-buffer-or-region)
 )
-
-(setq tramp-default-method "ssh")
-
-(global-set-key (kbd "C-~") 'vterm)
