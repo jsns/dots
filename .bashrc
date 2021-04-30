@@ -2,19 +2,19 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+    . /etc/bashrc
 fi
 
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 if [ -f ~/.school_aliases ]; then
-	. ~/.school_aliases
+    . ~/.school_aliases
 fi
 
 if [ -f ~/.bash_paths ]; then
-	. ~/.bash_paths
+    . ~/.bash_paths
 fi
 
 # User specific environment
@@ -45,3 +45,4 @@ esac
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 source "$HOME/.cargo/env"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
