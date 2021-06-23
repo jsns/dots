@@ -1,4 +1,6 @@
-;; init.el updated 3/29/21
+;;; init.el --- Initialization file for Emacs
+;;; Commentary: Emacs Startup File --- initialization for Emacs
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
@@ -15,7 +17,7 @@
  '(custom-enabled-themes (quote (nnn)))
  '(custom-safe-themes
    (quote
-    ("8ada4702edcd736805dd77fb96039ddbfac54c280bb55b3a2a2ccb05c821fc93" default)))
+    ("4eedf4278160baa4f2f369b8c166847f4487f77fae2b84de9b956f47add5a000" "27b91eb7fd16994de60be9d391198164dd54bb83af99bae32f8a301266ced18d" "8ada4702edcd736805dd77fb96039ddbfac54c280bb55b3a2a2ccb05c821fc93" default)))
  '(display-line-numbers (quote relative))
  '(frame-brackground-mode (quote dark))
  '(gnutls-algorithm-priority "normal:-vers-tls1.3")
@@ -32,7 +34,6 @@
  '(selectrum-preprocess-candidates-function (quote selectrum-prescient--preprocess))
  '(selectrum-prescient-mode t)
  '(selectrum-refine-candidates-function (quote prescient-filter)))
- ;; ???????????????
 
 (eval-when-compile (require 'use-package))
 
@@ -52,15 +53,17 @@
 (eval-when-compile
   (require 'use-package))
 
-(setq
- inhibit-startup-screen t
- initial-scratch-message nil
- ring-bell-function 'ignore
- scroll-conservatively 100)
+(setq inhibit-startup-screen t
+      initial-scratch-message nil
+      ring-bell-function 'ignore
+      scroll-conservatively 100
+      display-time-day-and-date t)
 
 (setq-default show-trailing-whitespace 't
               indicate-empty-lines 't
-              indent-tabs-mode nil)
+              indent-tabs-mode nil
+              tab-width 4
+              c-basic-offset 4)
 
 (blink-cursor-mode 0)
 (global-set-key (kbd "C-c o") 'org-agenda)
@@ -69,17 +72,10 @@
 (global-unset-key (kbd "M-c"))
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-;; no wrap
 (set-default 'truncate-lines t)
-;; fringe on left
 (fringe-mode '(10 . 0))
 
-;; scroll
-(autoload 'View-scroll-half-page-forward "view") (autoload 'View-scroll-half-page-backward "view")
-(global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
-(global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
-
-(set-face-attribute 'default nil :font "DejaVu Sans Mono-14")
+(set-face-attribute 'default nil :font "Monospace-14")
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
@@ -88,23 +84,9 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq display-time-day-and-date t)
-
 (delete-selection-mode t)
-(use-package diminish
-  :ensure t)
-(diminish 'eldoc-mode)
 
-(use-package whitespace
-  :ensure nil
-  :hook (before-save . whitespace-cleanup))
-
-(setq-default tab-width 4
-              c-basic-offset 4)
-
-(add-to-list 'load-path "~/.emacs.d/other/")
-(global-set-key (kbd "C-x 2")
-                (lambda () (interactive) (split-window-below) (other-window 1)))
+(global-set-key (kbd "C-x 2") (lambda () (interactive) (split-window-below) (other-window 1)))
 (global-set-key (kbd "C-x 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
 
 (use-package lsp-mode
@@ -115,11 +97,10 @@
          (c++-mode . lsp)
          (js-mode . lsp)
          (jsx-mode . lsp)
-         )
+        )
   :commands lsp
   :config
-  (add-hook 'java-mode-hook #'lsp)
-  (setq lsp-headerline-breadcrumb-enable nil ;; disable header breadcrumb
+  (setq lsp-headerline-breadcrumb-enable nil
         lsp-modeline-diagnostics-enable nil
         lsp-signature-render-documentation nil ;; turn off documentation in minibuffer
         lsp-ui-doc-enable nil
@@ -129,18 +110,12 @@
         lsp-clients-clangd-args '("--header-insertion=never")
         lsp-enable-indentation nil
         lsp-ui-sideline-show-code-actions nil
-        lsp-ui-sideline-show-hover nil)
-  )
+        lsp-ui-sideline-show-hover nil))
 
-(use-package selectrum
-  :ensure t
-  :config
-  (selectrum-mode +1))
-
-(use-package selectrum-prescient
-  :ensure t
-  :config
-  (selectrum-prescient-mode +1))
+(use-package selectrum :ensure t :config (selectrum-mode +1))
+(use-package selectrum-prescient :ensure t :config (selectrum-prescient-mode +1))
+(use-package magit :ensure t :defer t)
+(use-package whitespace :ensure nil :hook (before-save . whitespace-cleanup))
 
 (use-package projectile
   :ensure t
@@ -155,17 +130,14 @@
   :hook
   (prog-mode . flycheck-mode))
 
-(use-package magit
-  :ensure t
-  :defer t)
-
 (use-package company
   :delight
   :ensure t
   :hook
   (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (global-set-key (kbd "M-c") 'company-complete))
+  (global-set-key (kbd "M-c") 'company-complete)
+  (setq company-format-margin-function nil))
 
 (use-package which-key
   :delight
@@ -178,52 +150,3 @@
   :config
   (global-set-key (kbd "M-o") #'crux-other-window-or-switch-buffer)
   (global-set-key (kbd "C-c n") #'crux-cleanup-buffer-or-region))
-
-(use-package multiple-cursors
-  :ensure t
-  :config
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
-
-;; (use-package vterm
-;;   :ensure t
-;;   :config (setq vterm-kill-buffer-on-exit t)
-;;           (set-face-attribute 'vterm-color-black nil :foreground "#073642" :background "#002b36")
-;;           (set-face-attribute 'vterm-color-red nil :foreground "#dc322f" :background "#cb4b16")
-;;           (set-face-attribute 'vterm-color-green nil :foreground "#859900" :background "#586e75")
-;;           (set-face-attribute 'vterm-color-yellow nil :foreground "#b58900" :background "#657b83")
-;;           (set-face-attribute 'vterm-color-blue nil :foreground "#268bd2" :background "#839496")
-;;           (set-face-attribute 'vterm-color-magenta nil :foreground "#d33682" :background "#6c71c4")
-;;           (set-face-attribute 'vterm-color-cyan nil :foreground "#2aa198" :background "#93a1a1")
-;;           (set-face-attribute 'vterm-color-white nil :foreground "#eee8d5" :background "#fdf6e3"))
-
-(add-hook 'vterm-mode-hook
-          (lambda ()
-            (display-line-numbers-mode -1)))
-;; (require 'exwm)
-;; (require 'exwm-config)
-;; (exwm-enable)
-;; (setq exwm-workspace-number 4)
-;; (setq exwm-input-global-keys
-;;       `(
-;;         ;; Bind "s-r" to exit char-mode and fullscreen mode.
-;;         ([?\s-r] . exwm-reset)
-;;         ;; Bind "s-w" to switch workspace interactively.
-;;         ([?\s-w] . exwm-workspace-switch)
-;;         ;; Bind "s-0" to "s-9" to switch to a workspace by its index.
-;;         ,@(mapcar (lambda (i)
-;;                     `(,(kbd (format "s-%d" i)) .
-;;                       (lambda ()
-;;                         (interactive)
-;;                         (exwm-workspace-switch-create ,i))))
-;;                   (number-sequence 0 9))
-;;         ;; Bind "s-&" to launch applications ('M-&' also works if the output
-;;         ;; buffer does not bother you).
-;;         ([?\s-&] . (lambda (command)
-;;              (interactive (list (read-shell-command "$ ")))
-;;              (start-process-shell-command command nil command)))
-;;         ;; Bind "s-<f2>" to "slock", a simple X display locker.
-;;         ([s-f2] . (lambda ()
-;;             (interactive)
-;;             (start-process "" nil "/usr/bin/slock")))))
